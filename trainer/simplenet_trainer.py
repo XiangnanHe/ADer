@@ -109,8 +109,8 @@ class SimpleNetTrainer(BaseTrainer):
 			self.scores, self.preds = self.net.net_simplenet.predict(self.imgs)
 			# self.forward()
 			# self.net.predict()
-			loss_cos = self.loss_terms['sum'](self.true_loss, self.fake_loss)
-			update_log_term(self.log_terms.get('sum'), reduce_tensor(loss_cos, self.world_size).clone().detach().item(), 1, self.master)
+			# loss_cos = self.loss_terms['sum'](self.true_loss, self.fake_loss)
+			# update_log_term(self.log_terms.get('sum'), reduce_tensor(loss_cos, self.world_size).clone().detach().item(), 1, self.master)
 			# get anomaly maps
 			# anomaly_map, _ = self.evaluator.cal_anomaly_map(self.feats_t, self.feats_s, [self.imgs.shape[2], self.imgs.shape[3]], uni_am=False, amap_mode='add', gaussian_sigma=4)
 			anomaly_map = self.preds

@@ -341,3 +341,22 @@ class SegmentCELoss(nn.Module):
         pred = pred.view(bsz, 2, -1)
         mask = mask.view(bsz, -1).long()
         return self.criterion(pred,mask)
+
+@LOSS.register_module
+class BCELoss(nn.Module):
+    """Binary Cross Entropy Loss for anomaly detection"""
+    def __init__(self, lam=1, pos_weight=None):
+        super(BCELoss, self).__init__()
+        self.lam = lam
+        self.pos_weight = pos_weight
+        if pos_weight is not None:
+            self.loss = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]))
+        else:
+            self.loss = nn.BCEWithLogitsLoss()
+
+    def forward(self, input, target):
+        """
+        input: predictions (logits) - (B, 1, ...) or (B, 1)
+        target: ground truth - same shape as input, values in [0, 1]
+        """
+        return self.loss(input, target) * self.lam

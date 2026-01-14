@@ -766,10 +766,9 @@ class SimpleNet(torch.nn.Module):
 
         return scores, masks, features, labels_gt, masks_gt
 
-    def predict(self, inputs):
+    def predict(self, images):
         """Infer score and mask for a batch of images."""
-        images = inputs['img']
-        images = images.cuda()
+        # images is already a tensor on CUDA from the trainer
         _ = self.forward_modules.eval()
 
         batchsize = images.shape[0]
