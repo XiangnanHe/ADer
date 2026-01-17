@@ -30,10 +30,10 @@ class PatchExpand2D(nn.Module):
     """Patch expansion for decoder upsampling"""
     def __init__(self, dim, dim_scale=2, norm_layer=nn.LayerNorm):
         super().__init__()
-        self.dim = dim * 2
+        self.dim = dim
         self.dim_scale = dim_scale
-        self.expand = nn.Linear(self.dim, dim_scale * self.dim, bias=False)
-        self.norm = norm_layer(self.dim // dim_scale)
+        self.expand = nn.Linear(dim, dim_scale * dim_scale * (dim // dim_scale), bias=False)
+        self.norm = norm_layer(dim // dim_scale)
 
     def forward(self, x):
         """
@@ -41,7 +41,7 @@ class PatchExpand2D(nn.Module):
         Returns: (B, H*2, W*2, C//2)
         """
         B, H, W, C = x.shape
-        x = self.expand(x)
+        x = self.expand(x)  # (B, H, W, 4 * (C//2)) = (B, H, W, 2C)
         x = rearrange(x, 'b h w (p1 p2 c)-> b (h p1) (w p2) c',
                      p1=self.dim_scale, p2=self.dim_scale, c=C//self.dim_scale)
         x = self.norm(x)

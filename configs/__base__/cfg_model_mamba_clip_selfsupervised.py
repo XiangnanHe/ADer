@@ -1,4 +1,4 @@
-from util.net import Namespace
+from argparse import Namespace
 
 
 class cfg_model_mamba_clip_selfsupervised(Namespace):

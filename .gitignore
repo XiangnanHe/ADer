@@ -1,3 +1,10 @@
 # Python cache
 __pycache__/
 *.pth
+*.tar
+*.tar.xz
+data/mvtec/
+data/mvtec3d/
+data/visa/
+data/visa_backup/
+runs/
